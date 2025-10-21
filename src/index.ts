@@ -14,7 +14,7 @@ app.get("/api/ping", (_req: Request, res: Response) => {
   res.json({ ok: true, message: "ServiPagos backend alive" });
 });
 
-const PORT = process.env.PORT ?? 4000;
+const PORT = process.env.PORT || 4000;
 app.listen(Number(PORT), () => {
   // eslint-disable-next-line no-console
   console.log(`✅ ServiPagos backend running on http://localhost:${PORT}`);
