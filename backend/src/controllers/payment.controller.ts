@@ -75,6 +75,7 @@ export class PaymentController {
     );
     console.log(`[SP Callback] Attempting to redirect to: ${finalUrl}`);
     console.log(`[SP Callback] Full query params:`, req.query);
+    console.log(`[SP Callback] Full body:`, req.body);
 
     // Verificamos si la URL final existe.
     if (!finalUrl) {
