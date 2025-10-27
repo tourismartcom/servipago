@@ -10,6 +10,11 @@ import { Request, Response, NextFunction } from "express";
 
 const PREPAGOSLUJURIA_API_KEY = process.env.PREPAGOSLUJURIA_API_KEY;
 
+console.log(
+  "[DIAGNÓSTICO] PREPAGOSLUJURIA_API_KEY:",
+  process.env.PREPAGOSLUJURIA_API_KEY
+);
+
 // Verificación de seguridad al iniciar la aplicación.
 // Si la API key no está definida, es mejor que la aplicación falle al arrancar
 // a que se ejecute de forma insegura.
