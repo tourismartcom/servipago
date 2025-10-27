@@ -5,8 +5,8 @@ import { Request, Response } from "express";
 import {
   CreatePaymentSignatureRequest,
   CreatePaymentSignatureResponse,
-} from "../dtos/payment.dto.ts";
-import { BoldService } from "../services/bold.service.ts";
+} from "../dtos/payment.dto";
+import { BoldService } from "../services/bold.service";
 
 export class PaymentController {
   private readonly boldService: BoldService;

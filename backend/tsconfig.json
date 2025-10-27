@@ -1,17 +1,15 @@
 {
   "compilerOptions": {
-    "target": "ES2022",                // O una versión moderna de ECMAScript
-    "module": "NodeNext",             // ¡Esta es la clave! Le dice a TS cómo manejar módulos ESM en Node.js
-    "moduleResolution": "NodeNext",   // ¡Y esta es su compañera!
-    "outDir": "./dist",               // Directorio de salida para la compilación
-    "rootDir": "./src",               // Directorio raíz de tu código fuente
-    "esModuleInterop": true,          // Permite interoperabilidad entre CJS y ESM
+    "target": "ES2022",
+    "module": "CommonJS",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "strict": true,                   // Habilita todas las comprobaciones de tipo estrictas
-    "skipLibCheck": true,              // Evita la comprobación de tipos en archivos de declaración
-    "allowImportingTsExtensions": true,
-    "noEmit": true  
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": false
   },
-  "include": ["src/**/*"],              // Asegúrate de que solo incluya la carpeta src
+  "include": ["src/**/*"],
   "exclude": ["node_modules"]
 }
