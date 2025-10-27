@@ -74,6 +74,7 @@ export class PaymentController {
       `[SP Callback] Received from Bold. Status: ${transactionStatus}.`
     );
     console.log(`[SP Callback] Attempting to redirect to: ${finalUrl}`);
+    console.log(`[SP Callback] Full query params:`, req.query);
 
     // Verificamos si la URL final existe.
     if (!finalUrl) {
