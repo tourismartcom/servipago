@@ -8,7 +8,9 @@
     "esModuleInterop": true,          // Permite interoperabilidad entre CJS y ESM
     "forceConsistentCasingInFileNames": true,
     "strict": true,                   // Habilita todas las comprobaciones de tipo estrictas
-    "skipLibCheck": true              // Evita la comprobación de tipos en archivos de declaración
+    "skipLibCheck": true,              // Evita la comprobación de tipos en archivos de declaración
+    "allowImportingTsExtensions": true,
+    "noEmit": true  
   },
   "include": ["src/**/*"],              // Asegúrate de que solo incluya la carpeta src
   "exclude": ["node_modules"]

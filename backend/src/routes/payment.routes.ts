@@ -1,9 +1,9 @@
-// backend/src/routes/payment.routes.ts
+//EN SERVIPAGO: backend/src/routes/payment.routes.ts
 
 import { Router } from "express";
-import { PaymentController } from "../controllers/payment.controller.js";
-import { BoldService } from "../services/bold.service.js";
-import { authenticateClient } from "../middleware/auth.middleware.js";
+import { PaymentController } from "../controllers/payment.controller.ts";
+import { BoldService } from "../services/bold.service.ts";
+import { authenticateClient } from "../middleware/auth.middleware.ts";
 
 const router = Router();
 

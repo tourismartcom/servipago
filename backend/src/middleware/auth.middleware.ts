@@ -1,4 +1,4 @@
-// backend/src/middleware/auth.middleware.ts
+//EN SERVIPAGO:  backend/src/middleware/auth.middleware.ts
 
 import { Request, Response, NextFunction } from "express";
 

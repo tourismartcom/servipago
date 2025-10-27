@@ -1,4 +1,4 @@
-// backend/src/index.ts
+//EN SERVIPAGO: backend/src/index.ts
 
 // =========================================================================
 // == PASO 2: PRUEBA DE DIAGNÓSTICO INMEDIATO ==
@@ -15,7 +15,7 @@ console.log(
 // Como las variables ya están cargadas en `process.env`, estos imports
 // podrán acceder a ellas sin problema.
 import express, { Express, Request, Response } from "express";
-import paymentRoutes from "./routes/payment.routes.js";
+import paymentRoutes from "./routes/payment.routes.ts";
 
 const app: Express = express();
 const PORT = process.env.PORT || 3001;
