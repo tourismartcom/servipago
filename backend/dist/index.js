@@ -8,7 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // == PASO 2: PRUEBA DE DIAGNÓSTICO INMEDIATO ==
 // =========================================================================
 // Esta línea nos dirá si el archivo .env fue leído correctamente.
-console.log("[DIAGNÓSTICO] PREPAGOSLUJURIA_API_KEY:", process.env.PREPAGOSLUJURIA_API_KEY);
+console.log("[DIAGNÓSTICO] SERVIPAGOS_API_KEY:", process.env.SERVIPAGOS_API_KEY);
 // =========================================================================
 // == PASO 3: AHORA SÍ, IMPORTAR EL RESTO DE LA APLICACIÓN ==
 // =========================================================================

@@ -8,19 +8,19 @@ import { Request, Response, NextFunction } from "express";
 // Es FUNDAMENTAL que las claves secretas NUNCA estén escritas directamente
 // en el código. Siempre deben cargarse desde el entorno (.env en desarrollo).
 
-const PREPAGOSLUJURIA_API_KEY = process.env.PREPAGOSLUJURIA_API_KEY;
+const SERVIPAGOS_API_KEY = process.env.SERVIPAGOS_API_KEY;
 
 console.log(
-  "[DIAGNÓSTICO] PREPAGOSLUJURIA_API_KEY:",
-  process.env.PREPAGOSLUJURIA_API_KEY
+  "[DIAGNÓSTICO] SERVIPAGOS_API_KEY:",
+  process.env.SERVIPAGOS_API_KEY
 );
 
 // Verificación de seguridad al iniciar la aplicación.
 // Si la API key no está definida, es mejor que la aplicación falle al arrancar
 // a que se ejecute de forma insegura.
-if (!PREPAGOSLUJURIA_API_KEY) {
+if (!SERVIPAGOS_API_KEY) {
   console.error(
-    "FATAL ERROR: PREPAGOSLUJURIA_API_KEY is not defined in environment variables."
+    "FATAL ERROR: SERVIPAGOS_API_KEY is not defined in environment variables."
   );
   process.exit(1); // Detiene la ejecución del programa.
 }
@@ -54,7 +54,7 @@ export const authenticateClient = (
   }
 
   // 3. Comparar la key proporcionada con la que tenemos guardada.
-  if (apiKey !== PREPAGOSLUJURIA_API_KEY) {
+  if (apiKey !== SERVIPAGOS_API_KEY) {
     // Si la key no coincide, respondemos con un error 403 Forbidden.
     // Usamos 403 (Prohibido) en lugar de 401 porque el cliente se "autenticó"
     // (envió una key), pero no tiene permiso para acceder.

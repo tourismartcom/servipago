@@ -5,8 +5,8 @@
 // =========================================================================
 // Esta línea nos dirá si el archivo .env fue leído correctamente.
 console.log(
-  "[DIAGNÓSTICO] PREPAGOSLUJURIA_API_KEY:",
-  process.env.PREPAGOSLUJURIA_API_KEY
+  "[DIAGNÓSTICO] SERVIPAGOS_API_KEY:",
+  process.env.SERVIPAGOS_API_KEY
 );
 
 // =========================================================================
