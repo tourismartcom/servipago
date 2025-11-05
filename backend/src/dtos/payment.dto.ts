@@ -2,7 +2,7 @@
 
 export interface CreatePaymentSignatureRequest {
   orderId: string;
-  amountInCents: number;
+  amount: number;
   currency: "COP";
   customerEmail: string;
   description: string;

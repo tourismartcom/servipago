@@ -36,7 +36,7 @@ export class PaymentController {
       // Llamamos al método actualizado en nuestro servicio
       const signature = this.boldService.generateIntegritySignature({
         orderId: paymentData.orderId,
-        amountInCents: paymentData.amountInCents,
+        amount: paymentData.amount,
         currency: paymentData.currency,
       });
 

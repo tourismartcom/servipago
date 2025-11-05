@@ -7,7 +7,7 @@ import crypto from "crypto";
 // Haremos que la función de firma reciba solo lo necesario para firmar.
 interface BoldSignatureData {
   orderId: string;
-  amountInCents: number;
+  amount: number;
   currency: "COP";
 }
 
@@ -35,12 +35,19 @@ export class BoldService {
    * @returns La firma de integridad.
    */
   public generateIntegritySignature(data: BoldSignatureData): string {
-    const { orderId, amountInCents, currency } = data;
+    const { orderId, amount, currency } = data;
 
-    // Concatenamos los datos en el formato exacto que BOLD requiere.
-    // Tu código usaba Math.round(parseFloat(amount)), lo cual es correcto para montos decimales.
-    // Como ahora recibimos el monto en centavos (un entero), ya no es necesario el parseo/redondeo.
-    const dataToSign = `${orderId}${amountInCents}${currency}${this.boldSecretKey}`;
+    // Asegura que es un entero sin decimales (ej: '10000', no '10000.00')
+    const cleanAmount = Math.round(amount).toString();
+    const dataToSign = `${orderId}${cleanAmount}${currency}${this.boldSecretKey}`;
+
+    // === AÑADE ESTAS LÍNEAS PARA DEBUGGING ===
+    const dataWithoutSecret = `${orderId}${cleanAmount}${currency}`;
+    console.log(`[BOLD SERVICE] Cadena (sin clave): ${dataWithoutSecret}`);
+    console.log(
+      `[BOLD SERVICE] Longitud de la cadena: ${dataWithoutSecret.length}`
+    );
+    // =============================================
 
     const integritySignature = crypto
       .createHash("sha256")
