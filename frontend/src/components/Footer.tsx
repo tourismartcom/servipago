@@ -85,8 +85,8 @@ const Footer: React.FC = () => {
                   info@servipagos.com
                 </a>
               </li>
-              <li>Teléfono: (+00) 123 456 7890</li>
-              <li>Dirección: Ciudad de Integración, País</li>
+              <li>Teléfono: +57 3224145238</li>
+              <li>Dirección: Bogota, Colombia</li>
             </ul>
           </div>
         </div>

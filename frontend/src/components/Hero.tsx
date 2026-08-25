@@ -24,8 +24,6 @@ const Hero: React.FC = () => {
             Empieza a Integrar Hoy
           </a>
         </div>
-        [Image of a secure payment transaction process connecting a business and
-        a bank]
       </div>
     </section>
   );
