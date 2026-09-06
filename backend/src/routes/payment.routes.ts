@@ -4,6 +4,7 @@ import { Router } from "express";
 import { PaymentController } from "../controllers/payment.controller";
 import { BoldService } from "../services/bold.service";
 import { authenticateClient } from "../middleware/auth.middleware";
+import { CheckoutController } from "../controllers/checkout.controller";
 
 const router = Router();
 
@@ -31,7 +32,7 @@ const paymentController = new PaymentController(boldService);
 router.post(
   "/create-signature",
   authenticateClient, // <-- Middleware de seguridad. ¡Paso CRÍTICO!
-  paymentController.createSignature
+  paymentController.createSignature,
 );
 
 /**
@@ -41,5 +42,10 @@ router.post(
  * @access  Público (pero solo BOLD conoce esta URL)
  */
 router.get("/bold-callback", paymentController.handleBoldCallback);
+
+const checkoutController = new CheckoutController(boldService);
+
+// Nueva ruta para el checkout
+router.get("/checkout", checkoutController.serveCheckoutPage);
 
 export default router;
