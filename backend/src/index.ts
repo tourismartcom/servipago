@@ -6,7 +6,7 @@
 // Esta línea nos dirá si el archivo .env fue leído correctamente.
 console.log(
   "[DIAGNÓSTICO] SERVIPAGOS_API_KEY:",
-  process.env.SERVIPAGOS_API_KEY
+  process.env.SERVIPAGOS_API_KEY,
 );
 
 // =========================================================================
@@ -22,6 +22,11 @@ const PORT = process.env.PORT || 3001;
 
 app.use(express.json());
 
+// Endpoint de salud para keep-awake (no toca BD, respuesta instantánea)
+app.get("/health", (_req, res) => {
+  res.status(200).json({ ok: true, uptime: process.uptime() });
+});
+
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({ message: "Servipagos API is running!" });
 });
@@ -36,6 +41,6 @@ app.use((req: Request, res: Response) => {
 
 app.listen(PORT, () => {
   console.log(
-    `✅ Servipagos.com server is running on http://localhost:${PORT}`
+    `✅ Servipagos.com server is running on http://localhost:${PORT}`,
   );
 });
