@@ -68,7 +68,8 @@ export class PaymentController {
   ): Promise<void> => {
     // Extraemos la URL final a la que debemos redirigir. Viene como un query param.
     const finalUrl = req.query.final_url as string;
-    const transactionStatus = req.query.status as string;
+    const transactionStatus =
+      (req.query["bold-tx-status"] as string) || (req.query.status as string);
 
     console.log(
       `[SP Callback] Received from Bold. Status: ${transactionStatus}.`,
