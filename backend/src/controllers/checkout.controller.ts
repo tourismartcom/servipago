@@ -75,9 +75,10 @@ export class CheckoutController {
     const { orderId, amount, publicKey, signature, returnUrl } = params;
     const amountFormatted = amount.toLocaleString("es-CO");
 
+    // El pago termina en Servipagos (callback) y de ahí a lujuria
     const callbackUrl =
       `https://servipagos-backend.onrender.com/api/v1/payments/bold-callback` +
-      `?final_url=${encodeURIComponent(returnUrl as string)}`;
+      `?final_url=${encodeURIComponent(returnUrl)}`;
 
     return `
 <!DOCTYPE html>
@@ -111,33 +112,32 @@ export class CheckoutController {
       padding: 30px;
       text-align: center;
     }
-    .header h1 {
-      font-size: 24px;
-      margin-bottom: 8px;
-    }
-    .header p {
-      opacity: 0.9;
-      font-size: 14px;
-    }
-    .content {
-      padding: 40px 30px;
-    }
+    .header h1 { font-size: 26px; margin-bottom: 8px; }
+    .header p { opacity: 0.9; font-size: 14px; }
+    .content { padding: 35px 30px; }
     .amount-box {
       background: #f8f9fa;
       border-radius: 12px;
       padding: 24px;
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
-    .amount-label {
-      font-size: 14px;
-      color: #6c757d;
-      margin-bottom: 8px;
+    .amount-label { font-size: 14px; color: #6c757d; margin-bottom: 8px; }
+    .amount-value { font-size: 38px; font-weight: bold; color: #28a745; }
+    .methods {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
     }
-    .amount-value {
-      font-size: 36px;
-      font-weight: bold;
-      color: #28a745;
+    .method-badge {
+      background: #eef2ff;
+      color: #4338ca;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 20px;
     }
     .security-badge {
       display: flex;
@@ -146,99 +146,118 @@ export class CheckoutController {
       gap: 8px;
       color: #6c757d;
       font-size: 13px;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
-    .security-badge svg {
-      width: 16px;
-      height: 16px;
+    .pay-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 16px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
     }
-    #bold-checkout-container {
-      min-height: 200px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .pay-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(40,167,69,0.4);
     }
-    .loading {
+    .pay-btn:disabled {
+      background: #adb5bd;
+      cursor: wait;
+    }
+    .note {
       text-align: center;
+      font-size: 12px;
       color: #6c757d;
+      margin-top: 16px;
+      line-height: 1.5;
     }
-    .spinner {
-      border: 3px solid #f3f3f3;
-      border-top: 3px solid #667eea;
+    .spinner-small {
+      display: inline-block;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-top: 3px solid white;
       border-radius: 50%;
-      width: 40px;
-      height: 40px;
+      width: 18px;
+      height: 18px;
       animation: spin 1s linear infinite;
-      margin: 0 auto 16px;
+      vertical-align: middle;
+      margin-right: 8px;
     }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+    @keyframes spin { 0%{transform:rotate(0)} 100%{transform:rotate(360deg)} }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1>💳 Pago Seguro</h1>
-      <p>Procesado por Servipagos</p>
+      <h1>🛡️ Servipagos</h1>
+      <p>Checkout seguro de tu pedido</p>
     </div>
     <div class="content">
       <div class="amount-box">
-        <div class="amount-label">Monto a pagar</div>
+        <div class="amount-label">Total a pagar</div>
         <div class="amount-value">$${amountFormatted} COP</div>
       </div>
-      
-      <div class="security-badge">
-        <svg fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
-        </svg>
-        <span>Pago cifrado y seguro</span>
+
+      <div class="methods">
+        <span class="method-badge">💳 Tarjeta</span>
+        <span class="method-badge">🏦 PSE</span>
+        <span class="method-badge">💜 Nequi</span>
+        <span class="method-badge">🏧 Bancolombia</span>
       </div>
 
-      <div id="bold-checkout-container">
-        <div class="loading">
-          <div class="spinner"></div>
-          <p>Cargando formulario de pago...</p>
-        </div>
+      <div class="security-badge">
+        🔒 Transacción cifrada y protegida por Servipagos
       </div>
+
+      <button id="pay-btn" class="pay-btn" disabled>
+        <span class="spinner-small"></span> Preparando pago seguro...
+      </button>
+
+      <p class="note">
+        Al hacer clic serás llevado a nuestra pasarela aliada para
+        completar el pago. Orden: <strong>${orderId.slice(-8)}</strong>
+      </p>
     </div>
   </div>
 
   <script>
-    // Configuración de Bold Checkout
-    
-    const config = {
+    var config = {
       orderId: "${orderId}",
       currency: "COP",
       amount: "${amount}",
       apiKey: "${publicKey}",
       integritySignature: "${signature}",
       description: "Pago seguro vía Servipagos",
-      redirectionUrl: "${callbackUrl}",
+      redirectionUrl: "${callbackUrl}"
     };
 
-    // Cargar script de Bold
-    const script = document.createElement('script');
+    var btn = document.getElementById('pay-btn');
+
+    var script = document.createElement('script');
     script.src = "https://checkout.bold.co/library/boldPaymentButton.js";
-    script.onload = () => {
-      console.log('✅ Bold script cargado');
-      
-      // Crear instancia y abrir automáticamente
-      const checkout = new window.BoldCheckout(config);
-      
-      // Abrir el checkout después de 500ms (para que el usuario vea la página de Servipagos)
-      setTimeout(() => {
-        console.log('🎯 Abriendo checkout de Bold...');
-        checkout.open();
-      }, 500);
+
+    script.onload = function () {
+      try {
+        window.__boldCheckout = new window.BoldCheckout(config);
+        btn.disabled = false;
+        btn.innerHTML = "💳 Pagar $${amountFormatted} COP";
+        btn.onclick = function () {
+          btn.disabled = true;
+          btn.innerHTML = "Abriendo pasarela segura...";
+          window.__boldCheckout.open();
+        };
+      } catch (e) {
+        btn.innerHTML = "Error al preparar el pago. Recarga la página.";
+      }
     };
-    
-    script.onerror = () => {
-      document.getElementById('bold-checkout-container').innerHTML = 
-        '<p style="color: #dc3545; text-align: center;">Error al cargar el formulario de pago. Por favor, recarga la página.</p>';
+
+    script.onerror = function () {
+      btn.innerHTML = "Error de conexión. Recarga la página.";
     };
-    
+
     document.head.appendChild(script);
   </script>
 </body>
