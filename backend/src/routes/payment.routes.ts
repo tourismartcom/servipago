@@ -48,4 +48,6 @@ const checkoutController = new CheckoutController(boldService);
 // Nueva ruta para el checkout
 router.get("/checkout", checkoutController.serveCheckoutPage);
 
+router.get("/result", checkoutController.serveResultPage);
+
 export default router;

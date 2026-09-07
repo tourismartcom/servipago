@@ -264,4 +264,70 @@ export class CheckoutController {
 </html>
     `;
   }
+
+  public serveResultPage = (req: Request, res: Response): void => {
+    const status = ((req.query.status as string) || "UNKNOWN").toUpperCase();
+    const finalUrl = req.query.final_url as string;
+
+    if (!finalUrl) {
+      res.status(400).send("Falta información de redirección.");
+      return;
+    }
+
+    const approved =
+      status === "APPROVED" || status === "SUCCESS" || status === "APROBADA";
+
+    // Le anexamos el status al URL final para que lujuria sepa el resultado
+    const sep = finalUrl.includes("?") ? "&" : "?";
+    const target = `${finalUrl}${sep}status=${encodeURIComponent(status)}`;
+
+    res.setHeader("Content-Type", "text/html");
+    res.send(`
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resultado del pago - Servipagos</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px;
+    }
+    .card { background:white; border-radius:16px; max-width:460px; width:100%;
+      box-shadow:0 20px 60px rgba(0,0,0,.3); overflow:hidden; text-align:center; }
+    .top { padding:26px; color:white; background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); }
+    .top h1 { font-size:22px; }
+    .body { padding:36px 28px; }
+    .icon { font-size:64px; margin-bottom:16px; }
+    .msg { font-size:20px; font-weight:bold; margin-bottom:8px;
+      color:${approved ? "#28a745" : "#dc3545"}; }
+    .sub { color:#6c757d; font-size:14px; margin-bottom:24px; }
+    .spin { border:3px solid #f3f3f3; border-top:3px solid #667eea; border-radius:50%;
+      width:34px; height:34px; animation:spin 1s linear infinite; margin:0 auto 12px; }
+    @keyframes spin { 0%{transform:rotate(0)} 100%{transform:rotate(360deg)} }
+    a { color:#667eea; font-size:13px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="top"><h1>🛡️ Servipagos</h1></div>
+    <div class="body">
+      <div class="icon">${approved ? "✅" : "❌"}</div>
+      <div class="msg">${approved ? "¡Pago aprobado!" : "Pago no aprobado"}</div>
+      <div class="sub">Transacción procesada por Servipagos<br>Estado: ${status}</div>
+      <div class="spin"></div>
+      <div class="sub">Regresando a la tienda...</div>
+      <a href="${target}">Si no eres redirigido, haz clic aquí</a>
+    </div>
+  </div>
+  <script>
+    setTimeout(function(){ window.location.href = "${target}"; }, 2500);
+  </script>
+</body>
+</html>
+    `);
+  };
 }

@@ -18,17 +18,17 @@ export class PaymentController {
 
     if (!this.boldPublicKey) {
       console.error(
-        "FATAL ERROR: BOLD_PUBLIC_KEY is not configured in environment variables."
+        "FATAL ERROR: BOLD_PUBLIC_KEY is not configured in environment variables.",
       );
       throw new Error(
-        "BOLD_PUBLIC_KEY is not configured in environment variables."
+        "BOLD_PUBLIC_KEY is not configured in environment variables.",
       );
     }
   }
 
   public createSignature = async (
     req: Request<{}, {}, CreatePaymentSignatureRequest>,
-    res: Response<CreatePaymentSignatureResponse | { message: string }>
+    res: Response<CreatePaymentSignatureResponse | { message: string }>,
   ): Promise<void> => {
     try {
       const paymentData = req.body;
@@ -53,7 +53,7 @@ export class PaymentController {
         error instanceof Error ? error.message : "An unknown error occurred";
       console.error(
         "[PaymentController] Error creating BOLD signature:",
-        errorMessage
+        errorMessage,
       );
       res
         .status(500)
@@ -64,14 +64,14 @@ export class PaymentController {
   // ... (el método handleBoldCallback se mantiene igual por ahora)
   public handleBoldCallback = async (
     req: Request,
-    res: Response
+    res: Response,
   ): Promise<void> => {
     // Extraemos la URL final a la que debemos redirigir. Viene como un query param.
     const finalUrl = req.query.final_url as string;
     const transactionStatus = req.query.status as string;
 
     console.log(
-      `[SP Callback] Received from Bold. Status: ${transactionStatus}.`
+      `[SP Callback] Received from Bold. Status: ${transactionStatus}.`,
     );
     console.log(`[SP Callback] Attempting to redirect to: ${finalUrl}`);
     console.log(`[SP Callback] Full query params:`, req.query);
@@ -80,14 +80,17 @@ export class PaymentController {
     // Verificamos si la URL final existe.
     if (!finalUrl) {
       console.error(
-        "[SP Callback] CRITICAL: final_url parameter was not provided."
+        "[SP Callback] CRITICAL: final_url parameter was not provided.",
       );
       res.status(400).send("Error: Missing redirection information.");
       return;
     }
 
-    // ¡La magia! Le decimos al navegador del usuario que vaya a la URL de PL.
-    // Express se encarga de enviar la respuesta HTTP 302 correcta.
-    res.redirect(finalUrl);
+    // DESPUÉS: pasar por la página de resultado de Servipagos
+    const resultUrl =
+      `/api/v1/payments/result` +
+      `?status=${encodeURIComponent(transactionStatus || "UNKNOWN")}` +
+      `&final_url=${encodeURIComponent(finalUrl)}`;
+    res.redirect(resultUrl);
   };
 }
