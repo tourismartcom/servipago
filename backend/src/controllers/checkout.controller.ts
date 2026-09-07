@@ -75,6 +75,10 @@ export class CheckoutController {
     const { orderId, amount, publicKey, signature, returnUrl } = params;
     const amountFormatted = amount.toLocaleString("es-CO");
 
+    const callbackUrl =
+      `https://servipagos-backend.onrender.com/api/v1/payments/bold-callback` +
+      `?final_url=${encodeURIComponent(returnUrl as string)}`;
+
     return `
 <!DOCTYPE html>
 <html lang="es">
@@ -203,6 +207,7 @@ export class CheckoutController {
 
   <script>
     // Configuración de Bold Checkout
+    
     const config = {
       orderId: "${orderId}",
       currency: "COP",
@@ -210,7 +215,7 @@ export class CheckoutController {
       apiKey: "${publicKey}",
       integritySignature: "${signature}",
       description: "Pago seguro vía Servipagos",
-      redirectionUrl: "${returnUrl}",
+      redirectionUrl: "${callbackUrl}",
     };
 
     // Cargar script de Bold
